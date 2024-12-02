@@ -1,12 +1,23 @@
 import express from 'express'
 import connectDB from './config/db.js'
 import dotenv from 'dotenv';
+import userRoutes from './routes/userRoutes.js';
+import roleRoutes from './routes/roleRoutes.js';
+import taskRoutes from './routes/taskRoutes.js'
+import authRoutes from './routes/authRoutes.js'
+import projectRoutes from './routes/projectRoutes.js'
 dotenv.config();
 
 connectDB();
 const app = express()
 const port = process.env.PORT || 3000
+app.use(express.json());
 
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/roles', roleRoutes);
+app.use('/api/v1/tasks', taskRoutes);
+app.use('/api/v1/auth',  authRoutes);
+app.use('/api/v1/projects',  projectRoutes);
 
 app.get('/', (req, res) => {
     res.send('Hello World!')

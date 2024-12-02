@@ -1,25 +1,31 @@
 import jwt from 'jsonwebtoken'
-import {User} from '../models'
+import Users from '../models/userModel.js';
 
 export const authenticate = async (req, res, next) => {
     const token = req.header('Authorization');
-    if (!token) return res.status(401).json({ message: 'Access denied' });
+    if (!token) return res.status(401).send({success:false, message: 'Access denied' });
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = await User.findById(decoded.id).populate('role');
+        req.user = await Users.findById(decoded.id).populate('role');
         next();
     } catch (err) {
-        res.status(400).json({ message: 'Invalid token' });
+        res.status(400).send({success:false, message: 'Invalid token' });
     }
 };
 
-export const authorize = (requiredPermission) => {
+export const authorize = (resource,action) => {
     return (req, res, next) => {
         const { role } = req.user;
-        if (!role.permissions.includes(requiredPermission)) {
-            return res.status(403).json({ message: 'Permission denied' });
+        
+        const permission = role.permissions.find(
+            (perm) => perm.resource === resource && perm.actions.includes(action)
+        );
+
+        if (!permission) {
+            return res.status(403).send({success:false, message: 'Permission denied' });
         }
+
         next();
     };
 };

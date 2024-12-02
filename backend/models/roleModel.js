@@ -48,4 +48,5 @@ const roleSchema = new mongoose.Schema({
 
 roleSchema.index({ 'permissions.resource': 1 });
 
-export default mongoose.model('Role', roleSchema);
+const Roles = mongoose.model('Role', roleSchema);
+export default Roles
