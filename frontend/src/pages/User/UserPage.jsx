@@ -45,10 +45,8 @@ const UserPage = () => {
     const [loading, setLoading] = useState(false);
     const fetchUsers = async () => {
         const apiCall = axios.get(`${CONFIG.BASE_URL}/users`, {
-            headers: {
-                Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGRkYTYwMzE0MjgwY2Y0MGM5Yjk0NyIsImlhdCI6MTczMzI0NzE1OCwiZXhwIjoxNzMzMzMzNTU4fQ.HzoSMrjhHrCuOnfXjbTSDJnYlxtcU5OYBKOwE4qd6Xc"
-            }
-        });
+            withCredentials: true,
+          });
         toast.promise(
             apiCall,
             {
@@ -80,10 +78,8 @@ const UserPage = () => {
         // Fetch roles from the API (if not already available)
         const fetchRoles = async () => {
             const apiCall = axios.get(`${CONFIG.BASE_URL}/roles`, {
-                headers: {
-                    Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGRkYTYwMzE0MjgwY2Y0MGM5Yjk0NyIsImlhdCI6MTczMzI0NzE1OCwiZXhwIjoxNzMzMzMzNTU4fQ.HzoSMrjhHrCuOnfXjbTSDJnYlxtcU5OYBKOwE4qd6Xc"
-                }
-            });
+                withCredentials: true,
+              });
             try {
                 const response = await apiCall;
                 if (response.data.success) {
@@ -112,10 +108,8 @@ const UserPage = () => {
         setLoading(true);
         // try {
         const apiCall = axios.post(`${CONFIG.BASE_URL}/users/register`, newUser, {
-            headers: {
-                Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGRkYTYwMzE0MjgwY2Y0MGM5Yjk0NyIsImlhdCI6MTczMzI0NzE1OCwiZXhwIjoxNzMzMzMzNTU4fQ.HzoSMrjhHrCuOnfXjbTSDJnYlxtcU5OYBKOwE4qd6Xc"
-            }
-        });
+            withCredentials: true,
+          });
 
         toast.promise(
             apiCall,

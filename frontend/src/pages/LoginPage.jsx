@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, TextField, Button, Typography, Container, Grid, Paper } from '@mui/material';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import CONFIG from '../config/config';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
-import { login } from '../slices/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, selectAuth } from '../slices/authSlice';
 
-const LoginPage = ({ onLogin }) => {
+const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isAuthenticated} = useSelector(selectAuth);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -52,10 +53,6 @@ const LoginPage = ({ onLogin }) => {
       const apiCall = axios.post(`${CONFIG.BASE_URL}/users/login`, {
         email,
         password
-      }, {
-        headers: {
-          Authorization: "eyJhbGd1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGRkYTYwMzE0MjgwY2Y0MGM5Yjk0NyIsImlhdCI6MTczMzI0NzE1OCwiZXhwIjoxNzMzMzMzNTU4fQ.HzoSMrjhHrCuOnfXjbTSDJnYlxtcU5OYBKOwE4qd6Xc"
-        }
       })
       toast.promise(
         apiCall,
@@ -74,7 +71,7 @@ const LoginPage = ({ onLogin }) => {
         const response = await apiCall;
         console.log('API Response:', response.data);
         if (response.data.success) {
-          dispatch(login());
+          dispatch(login(response.data.user));
         }
       } catch (error) {
         console.error("Error fetching tasks:", error);
@@ -84,7 +81,11 @@ const LoginPage = ({ onLogin }) => {
       
     }
   };
-
+useEffect(()=>{
+  if(isAuthenticated){
+    navigate('/home')
+  }
+},[isAuthenticated])
   return (
     <Container component="main" maxWidth="xs" sx={{ minHeight: '100vh', display: "flex", alignItems: "center", justifyContent: "center" }}>
       <Paper elevation={3} sx={{ padding: 3 }}>

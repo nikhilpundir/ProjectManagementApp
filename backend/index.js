@@ -9,11 +9,16 @@ import projectRoutes from './routes/projectRoutes.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 dotenv.config();
-
+const allowedOrigin = 'http://localhost:5173';
+const corsOptions = {
+    origin: allowedOrigin,   // Allow the frontend origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed HTTP methods
+    credentials: true,       // Allow sending credentials (cookies, authorization headers)
+  };
 connectDB();
 const app = express()
 const port = process.env.PORT || 3000
-app.use(cors())
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 

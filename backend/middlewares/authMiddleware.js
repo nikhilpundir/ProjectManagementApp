@@ -3,6 +3,8 @@ import Users from '../models/userModel.js';
 
 export const authenticate = async (req, res, next) => {
     const token = req.cookies.token;
+    console.log(token);
+    
     if (!token) return res.status(401).send({success:false, message: 'Access denied' });
 
     try {

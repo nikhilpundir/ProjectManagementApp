@@ -48,9 +48,7 @@ const ProjectPage = () => {
     const fetchProjects = async () => {
       const apiCall = axios.get(`${CONFIG.BASE_URL}/projects`,
         {
-          headers: {
-            Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGRkYTYwMzE0MjgwY2Y0MGM5Yjk0NyIsImlhdCI6MTczMzI0NzE1OCwiZXhwIjoxNzMzMzMzNTU4fQ.HzoSMrjhHrCuOnfXjbTSDJnYlxtcU5OYBKOwE4qd6Xc"
-          }
+          withCredentials: true,
         });
       toast.promise(
         apiCall,
@@ -94,7 +92,9 @@ const ProjectPage = () => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('/api/projects', newProject);
+      const response = await axios.post('/api/projects', newProject,{
+        withCredentials: true,
+      });
       if (response.data.success) {
         setProjects((prevProjects) => [...prevProjects, response.data.data]);
         setOpenDialog(false); // Close the dialog after submission
@@ -116,7 +116,9 @@ const ProjectPage = () => {
   // Handle project deletion
   const handleDeleteProject = async (projectId) => {
     try {
-      const response = await axios.delete(`/api/projects/${projectId}`);
+      const response = await axios.delete(`/api/projects/${projectId}`,{
+        withCredentials: true,
+      });
       if (response.data.success) {
         setProjects((prevProjects) => prevProjects.filter(project => project._id !== projectId));
       }

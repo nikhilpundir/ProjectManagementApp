@@ -1,8 +1,13 @@
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { Box, Drawer, CssBaseline, AppBar as MuiAppBar, Toolbar, List, Typography, Divider, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { Menu as MenuIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon, Home as HomeIcon, Work as WorkIcon, CheckCircle as CheckCircleIcon, People as PeopleIcon, Login as LoginIcon, Logout as LogoutIcon } from '@mui/icons-material';
+import { Menu as MenuIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon, Home as HomeIcon, Work as WorkIcon, CheckCircle as CheckCircleIcon, People as PeopleIcon, Login as LoginIcon, Logout as LogoutIcon,Security as SecurityIcon  } from '@mui/icons-material';
 import { Outlet, useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, selectAuth } from '../slices/authSlice';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import CONFIG from '../config/config';
 
 const drawerWidth = 240;
 
@@ -49,8 +54,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function PersistentDrawerLeft({ userRole, isLoggedIn=true, onLogout }) {
   const theme = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
-
+  const { user } = useSelector(selectAuth);
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
 
@@ -61,28 +67,35 @@ export default function PersistentDrawerLeft({ userRole, isLoggedIn=true, onLogo
       label: 'Home',
       path: 'home',
       icon: <HomeIcon />,
-      roles: ['admin', 'manager', 'user'], // All roles can access
+      roles: ['ADMIN', 'MANAGER', 'USER'], // All roles can access
     },
     {
       id: 'Projects',
       label: 'Projects',
       path: 'projects',
       icon: <WorkIcon />,
-      roles: ['admin', 'manager'], // Only admin and manager roles
+      roles: ['ADMIN', 'MANAGER'], // Only admin and manager roles
     },
     {
       id: 'Tasks',
       label: 'Tasks',
       path: 'tasks',
       icon: <CheckCircleIcon />,
-      roles: ['admin', 'manager', 'user'], // All roles can access
+      roles: ['ADMIN', 'MANAGER', 'USER'], // All roles can access
     },
     {
       id: 'Users',
       label: 'Users',
       path: 'users',
       icon: <PeopleIcon />,
-      roles: ['admin'], // Only admin role
+      roles: ['ADMIN'], // Only admin role
+    },
+    {
+      id: 'Roles',
+      label: 'Roles',
+      path: 'roles  ',
+      icon: <SecurityIcon />,
+      roles: ['ADMIN'], // Only admin role
     },
     // Add Login/Logout items
     {
@@ -98,21 +111,45 @@ export default function PersistentDrawerLeft({ userRole, isLoggedIn=true, onLogo
       label: 'Logout',
       path: 'logout',
       icon: <LogoutIcon />,
-      roles: ['admin', 'manager', 'user'], // Visible to logged-in users
+      roles: ['ADMIN', 'MANAGER', 'USER'], // Visible to logged-in users
       condition: isLoggedIn, // Only show Logout if the user is logged in
     }
   ];
 
   // Filter navigation items based on the user's role and login state
   const filteredNavigationList = navigationList.filter(
-    (item) => item.roles.includes(userRole) && (item.condition === undefined || item.condition)
+    (item) => item.roles.includes(user.role.name.toUpperCase()) && (item.condition === undefined || item.condition)
   );
 
-  const handleLogout = () => {
+  const handleLogout =async () => {
     // Call the logout function to clear authentication state (e.g., remove tokens, clear user data, etc.)
-    onLogout();
+    // onLogout();
     // Optionally, navigate to a login page or home page
-    navigate('/login');
+    const apiCall = axios.post(`${CONFIG.BASE_URL}/users/logout`, {})
+    toast.promise(
+      apiCall,
+      {
+        pending: 'Logging out...',
+        success: 'Logged out successfully!',
+        error: {
+          render({ data }) {
+            return `${data?.response?.data?.message || "Error Logging out"}`
+          }
+        }
+      }
+    );
+    try {
+      const response = await apiCall;
+      console.log('API Response:', response.data);
+      if (response.data.success) {
+        dispatch(logout());
+      }
+    } catch (error) {
+      console.error("Error Logging out", error);
+    } finally{
+      navigate('/login');
+    }
+    
   };
 
   return (

@@ -49,10 +49,8 @@ const TaskPage = () => {
 
             const apiCall = axios.get(`${CONFIG.BASE_URL}/tasks`,
                 {
-                    headers: {
-                        Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGRkYTYwMzE0MjgwY2Y0MGM5Yjk0NyIsImlhdCI6MTczMzI0NzE1OCwiZXhwIjoxNzMzMzMzNTU4fQ.HzoSMrjhHrCuOnfXjbTSDJnYlxtcU5OYBKOwE4qd6Xc"
-                    }
-                }); // Adjust the API URL as needed
+                    withCredentials: true,
+                  }); // Adjust the API URL as needed
                 toast.promise(
                     apiCall,
                     {
@@ -96,7 +94,9 @@ const TaskPage = () => {
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            const response = await axios.post('/api/tasks', newTask);
+            const response = await axios.post('/api/tasks', newTask,{
+                withCredentials: true,
+              });
             if (response.data.success) {
                 setTasks((prevTasks) => [...prevTasks, response.data.data]);
                 setOpenDialog(false); // Close the dialog after submission
@@ -118,7 +118,9 @@ const TaskPage = () => {
     // Handle task deletion
     const handleDeleteTask = async (taskId) => {
         try {
-            const response = await axios.delete(`/api/tasks/${taskId}`);
+            const response = await axios.delete(`/api/tasks/${taskId}`,{
+                withCredentials: true,
+              });
             if (response.data.success) {
                 setTasks((prevTasks) => prevTasks.filter(task => task._id !== taskId));
             }
