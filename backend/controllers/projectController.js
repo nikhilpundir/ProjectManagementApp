@@ -12,7 +12,7 @@ export const createProject = async (req, res) => {
 
 export const getAllProjects = async (req, res) => {
   try {
-    const project = await Project.find().populate("team");
+    const project = await Project.find().populate("team",'name email');
     res.status(201).send({ success: true, data: project });
   } catch (err) {
     res.status(400).send({ success: false, message: err.message });

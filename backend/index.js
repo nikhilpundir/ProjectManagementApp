@@ -6,12 +6,16 @@ import roleRoutes from './routes/roleRoutes.js';
 import taskRoutes from './routes/taskRoutes.js'
 import authRoutes from './routes/authRoutes.js'
 import projectRoutes from './routes/projectRoutes.js'
+import cors from 'cors'
+import cookieParser from 'cookie-parser';
 dotenv.config();
 
 connectDB();
 const app = express()
 const port = process.env.PORT || 3000
+app.use(cors())
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/roles', roleRoutes);
