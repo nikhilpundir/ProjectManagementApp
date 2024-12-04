@@ -73,7 +73,11 @@ This project demonstrates a *Role-Based Access Control (RBAC)* system with authe
 - Postman for API testing.  
 
 ---
-
+##Live Demo
+*try login with these credentials
+email: "admin@gmail.com" password:"Admin@123" for admin role
+email: "manager@gmail.com" password:"Manager@123" for manager role
+email: "user@gmail.com" password:"User@123" for user role
 ## Installation and Setup  
 
 *Clone the Repository:*  
