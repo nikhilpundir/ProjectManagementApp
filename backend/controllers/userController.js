@@ -27,6 +27,7 @@ const loginUser = async (req, res) => {
       httpOnly: true,      // Ensures the cookie can't be accessed by JavaScript (security)
       secure: process.env.NODE_ENV === 'production', // Secure cookies in production (use https)
       maxAge: 24 * 60 * 60 * 1000, // Cookie expiration (1 hour in this case)
+      sameSite: 'None',
     });
     const userData = user.toObject();
     delete userData.password;
