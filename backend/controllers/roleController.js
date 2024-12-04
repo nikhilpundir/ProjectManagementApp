@@ -4,9 +4,9 @@ export const createRole = async (req, res) => {
   const { name, permissions } = req.body;
   try {
     const role = await Roles.create({ name, permissions });
-    res.status(201).json(role);
+    res.status(201).json({success:true,data:role});
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({success:false, message: err.message });
   }
 };
 

@@ -121,7 +121,9 @@ const RolePage = () => {
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            const response = await axios.post('/api/roles', newRole);
+            const response = await axios.post(`${CONFIG.BASE_URL}/roles`, newRole,
+                {withCredentials: true,}
+            );
             if (response.data.success) {
                 setRoles((prevRoles) => [...prevRoles, response.data.data]);
                 setOpenDialog(false); // Close the dialog after submission

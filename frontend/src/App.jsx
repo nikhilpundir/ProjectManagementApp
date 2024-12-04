@@ -18,8 +18,8 @@ const App = () => {
      
       <Route index element={<WelcomePage />} />
       <Route path="login" element={<LoginPage />} />
-      <Route element={<RouteGuard allowedRoles={['ADMIN']} />}>
-        <Route element={<BaseLayout userRole={"ADMIN"}/>}>
+      <Route element={<RouteGuard allowedRoles={['ADMIN', 'MANAGER', 'USER']} />}>
+        <Route element={<BaseLayout/>}>
             <Route path="home" element={<HomePage role={"admin"}/>} />
             <Route path="projects" element={<ProjectPage />} />
             <Route path="tasks" element={<TaskPage />} />

@@ -53,6 +53,8 @@ const LoginPage = () => {
       const apiCall = axios.post(`${CONFIG.BASE_URL}/users/login`, {
         email,
         password
+      }, {
+        withCredentials: true,
       })
       toast.promise(
         apiCall,

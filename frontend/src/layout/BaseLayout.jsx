@@ -51,7 +51,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export default function PersistentDrawerLeft({ userRole, isLoggedIn=true, onLogout }) {
+export default function PersistentDrawerLeft({isLoggedIn=true }) {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -74,7 +74,7 @@ export default function PersistentDrawerLeft({ userRole, isLoggedIn=true, onLogo
       label: 'Projects',
       path: 'projects',
       icon: <WorkIcon />,
-      roles: ['ADMIN', 'MANAGER'], // Only admin and manager roles
+      roles: ['ADMIN', 'MANAGER','USER'], // Only admin and manager roles
     },
     {
       id: 'Tasks',
