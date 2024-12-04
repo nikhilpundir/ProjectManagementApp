@@ -11,9 +11,15 @@ import cookieParser from 'cookie-parser';
 dotenv.config();
 const allowedOrigin = ['https://project-management-app-nikhil-pundir.vercel.app','http://localhost:5173'];
 const corsOptions = {
-    origin: allowedOrigin,   // Allow the frontend origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed HTTP methods
-    credentials: true,       // Allow sending credentials (cookies, authorization headers)
+    origin: (origin, callback) => {
+      if (allowedOrigin.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
   };
 connectDB();
 const app = express()
