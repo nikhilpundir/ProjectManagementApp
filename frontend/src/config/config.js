@@ -1,5 +1,5 @@
 const CONFIG ={
-    BASE_URL:"http://localhost:5000/api/v1"
+    BASE_URL:"https://project-management-app-backend-nikhil-pundir.vercel.app/api/v1"
 }
 
 export default CONFIG
