@@ -9,7 +9,7 @@ import projectRoutes from './routes/projectRoutes.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 dotenv.config();
-const allowedOrigin = 'http://localhost:5173';
+const allowedOrigin = ['https://project-management-app-nikhil-pundir.vercel.app','http://localhost:5173'];
 const corsOptions = {
     origin: allowedOrigin,   // Allow the frontend origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed HTTP methods
